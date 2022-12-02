@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Day1;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,7 +39,7 @@ class Day1 extends Command {
     {
         $symfonyStyle = new SymfonyStyle($input, $output);
 
-        $bags = $this->getBags(file(__DIR__."/../resources/day-1.txt"));
+        $bags = $this->getBags(file(__DIR__."/../../resources/day-1.txt"));
 
         $symfonyStyle->success(sprintf("There is %d calories in the top one", $this->sumTopFeeders($bags, 1)));
         $symfonyStyle->success(sprintf("There is %d calories in the top three", $this->sumTopFeeders($bags, 3)));

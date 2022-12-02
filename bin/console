@@ -5,10 +5,15 @@ namespace App;
 
 require __DIR__."/../vendor/autoload.php";
 
+use App\Day1\Day1;
+use App\Day2\Day2;
+use App\Day2Part2\Day2Part2;
 use Symfony\Component\Console\Application;
 
 $application = new Application();
 
 $application->add(new Day1());
+$application->add(new Day2());
+$application->add(new Day2Part2());
 
 $application->run();
