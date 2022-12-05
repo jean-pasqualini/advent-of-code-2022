@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker build . -t advent-of-code:2022
+docker run -w /app -v $PWD:/app --rm -it advent-of-code:2022 bash
