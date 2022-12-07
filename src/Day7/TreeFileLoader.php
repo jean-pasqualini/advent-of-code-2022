@@ -7,16 +7,6 @@ use SebastianBergmann\CodeCoverage\Report\PHP;
 
 class TreeFileLoader
 {
-    private function isEnterDirectoryInstruction($lineParts): bool
-    {
-        return "$" === $lineParts[0] && "cd" === $lineParts[1];
-    }
-
-    private function isFileInstruction($lineParts): bool
-    {
-        return "$" !== $lineParts[0] && "dir" !== $lineParts[0];
-    }
-
     public function load(string $filepath): Directory
     {
         $lines = file($filepath, FILE_IGNORE_NEW_LINES);
@@ -34,6 +24,16 @@ class TreeFileLoader
         }
 
         return $currentDirectory->getRoot();
+    }
+
+    private function isEnterDirectoryInstruction($lineParts): bool
+    {
+        return "$" === $lineParts[0] && "cd" === $lineParts[1];
+    }
+
+    private function isFileInstruction($lineParts): bool
+    {
+        return "$" !== $lineParts[0] && "dir" !== $lineParts[0];
     }
 
     private function enterDirectory($directoryName, $currentDirectory): Directory
