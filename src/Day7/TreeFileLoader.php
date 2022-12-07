@@ -7,6 +7,16 @@ use SebastianBergmann\CodeCoverage\Report\PHP;
 
 class TreeFileLoader
 {
+    private function isEnterDirectoryInstruction($lineParts): bool
+    {
+        return "$" === $lineParts[0] && "cd" === $lineParts[1];
+    }
+
+    private function isFileInstruction($lineParts): bool
+    {
+        return "$" !== $lineParts[0] && "dir" !== $lineParts[0];
+    }
+
     public function load(string $filepath): Directory
     {
         $lines = file($filepath, FILE_IGNORE_NEW_LINES);
@@ -16,23 +26,26 @@ class TreeFileLoader
 
         foreach ($lines as $line) {
             $lineParts = explode(" ", $line);
-            if ("$" === $lineParts[0] && "cd" === $lineParts[1]) {
-                if (null === $currentDirectory) {
-                    $currentDirectory = new Directory($lineParts[2]);
-                    continue;
-                }
-
-                if (".." === $lineParts[2]) {
-                    $currentDirectory = $currentDirectory->getParent();
-                    continue;
-                }
-
-                $currentDirectory = new Directory($lineParts[2], $currentDirectory);
-            } elseif("$" !== $lineParts[0] && "dir" !== $lineParts[0]) {
+            if ($this->isEnterDirectoryInstruction($lineParts)) {
+                $currentDirectory = $this->enterDirectory($lineParts[2], $currentDirectory);
+            } elseif($this->isFileInstruction($lineParts)) {
                 $currentDirectory->addChildren(new File($lineParts[1], intval($lineParts[0])));
             }
         }
 
         return $currentDirectory->getRoot();
+    }
+
+    private function enterDirectory($directoryName, $currentDirectory): Directory
+    {
+        if (null === $currentDirectory) {
+            return new Directory($directoryName);
+        }
+
+        if (".." === $directoryName) {
+            return $currentDirectory->getParent();
+        }
+
+        return new Directory($directoryName, $currentDirectory);
     }
 }
