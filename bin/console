@@ -12,6 +12,7 @@ use App\Day3\Day3;
 use App\Day4\Day4;
 use App\Day5\Day5;
 use App\Day6\Day6;
+use App\Day7\Day7;
 use Symfony\Component\Console\Application;
 
 $application = new Application();
@@ -23,5 +24,6 @@ $application->add(new Day3());
 $application->add(new Day4());
 $application->add(new Day5());
 $application->add(new Day6());
+$application->add(new Day7());
 
 $application->run();
