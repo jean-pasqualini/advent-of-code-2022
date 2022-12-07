@@ -27,9 +27,7 @@ class TreeFileLoader
                     continue;
                 }
 
-                $newDirectory = new Directory($lineParts[2], $currentDirectory);
-                $currentDirectory->addChildren($newDirectory);
-                $currentDirectory = $newDirectory;
+                $currentDirectory = new Directory($lineParts[2], $currentDirectory);
             } elseif("$" !== $lineParts[0] && "dir" !== $lineParts[0]) {
                 $currentDirectory->addChildren(new File($lineParts[1], intval($lineParts[0])));
             }

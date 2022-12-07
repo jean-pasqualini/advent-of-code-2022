@@ -12,15 +12,9 @@ class FindSomeSpaceTest extends TestCase
     public function testPart2()
     {
         $rootDirectory = new Directory("/");
-
         $aDirectory = new Directory("a", $rootDirectory);
-        $rootDirectory->addChildren($aDirectory);
-
         $eDirectory = new Directory("e", $aDirectory);
-        $aDirectory->addChildren($eDirectory);
-
         $dDirectory = new Directory("d", $rootDirectory);
-        $rootDirectory->addChildren($dDirectory);
 
 
         $eDirectory->addChildren(new File("i", 584));
@@ -41,15 +35,9 @@ class FindSomeSpaceTest extends TestCase
     public function testPart1()
     {
         $rootDirectory = new Directory("/");
-
         $aDirectory = new Directory("a", $rootDirectory);
-        $rootDirectory->addChildren($aDirectory);
-
         $eDirectory = new Directory("e", $aDirectory);
-        $aDirectory->addChildren($eDirectory);
-
         $dDirectory = new Directory("d", $rootDirectory);
-        $rootDirectory->addChildren($dDirectory);
 
 
         $eDirectory->addChildren(new File("i", 584));

@@ -7,12 +7,15 @@ class Directory implements ItemInterface
     /** @var array<ItemInterface> */
     private array $children = [];
 
-    private ?Directory $parent;
+    private ?Directory $parent = null;
 
     public function __construct(string $name, Directory $parent = null)
     {
         $this->name = $name;
-        $this->parent = $parent;
+        if (null !== $parent) {
+            $this->parent = $parent;
+            $this->parent->addChildren($this);
+        }
     }
 
     public function getParent(): ?Directory
