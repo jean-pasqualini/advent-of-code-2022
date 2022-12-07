@@ -12,8 +12,8 @@ class GameFileLoaderTest extends TestCase
         $loader = new GameFileLoader();
         $board = $loader->loadGame(__DIR__.'/board.txt');
         $this->assertEquals([
-            ["[N]", "[Z]"],
-            ["[D]", "[C]", "[M]"],
+            ["[Z]", "[N]"],
+            ["[M]", "[C]", "[D]"],
             ["[P]"],
         ], $board->getBoard());
     }

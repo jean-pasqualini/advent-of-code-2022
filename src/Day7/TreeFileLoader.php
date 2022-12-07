@@ -11,36 +11,26 @@ class TreeFileLoader
     {
         $lines = file($filepath, FILE_IGNORE_NEW_LINES);
 
-        $currentDirectoryPath = [];
-
         /** @var Directory $currentDirectory */
         $currentDirectory = null;
 
         foreach ($lines as $line) {
             $lineParts = explode(" ", $line);
-            if ("$" === $lineParts[0]) {
-                switch ($lineParts[1]) {
-                    case "cd":
-                        if (null === $currentDirectory) {
-                            $currentDirectory = new Directory($lineParts[2]);
-                        } else {
-                            if (".." === $lineParts[2]) {
-                                $currentDirectory = $currentDirectory->getParent();
-
-                                array_pop($currentDirectoryPath);
-                            } else {
-                                $newDirectory = new Directory($lineParts[2], $currentDirectory);
-                                $currentDirectory->addChildren($newDirectory);
-                                $currentDirectory = $newDirectory;
-
-                                $currentDirectoryPath[] = $lineParts[2];
-                            }
-
-                        }
-                    break;
+            if ("$" === $lineParts[0] && "cd" === $lineParts[1]) {
+                if (null === $currentDirectory) {
+                    $currentDirectory = new Directory($lineParts[2]);
+                    continue;
                 }
-            } elseif("dir" === $lineParts[0]) {
-            } else {
+
+                if (".." === $lineParts[2]) {
+                    $currentDirectory = $currentDirectory->getParent();
+                    continue;
+                }
+
+                $newDirectory = new Directory($lineParts[2], $currentDirectory);
+                $currentDirectory->addChildren($newDirectory);
+                $currentDirectory = $newDirectory;
+            } elseif("$" !== $lineParts[0] && "dir" !== $lineParts[0]) {
                 $currentDirectory->addChildren(new File($lineParts[1], intval($lineParts[0])));
             }
         }
