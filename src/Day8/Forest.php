@@ -2,6 +2,8 @@
 
 namespace App\Day8;
 
+use Drawille\Canvas;
+use PHP_Parallel_Lint\PhpConsoleColor\ConsoleColor;
 use SebastianBergmann\CodeCoverage\Report\PHP;
 use Wujunze\Colors;
 
@@ -32,16 +34,8 @@ class Forest
         ];
     }
 
-    private function isTallest(int $x, int $y): bool
+    private function directionsVisible(int $x, int $y): array
     {
-        if ($x === 0 || $y === 0) {
-            return true;
-        }
-
-        if ($x === count($this->grid[0]) - 1 || $y === count($this->grid) - 1) {
-            return true;
-        }
-
         $treesAround = $this->getTreesAround($x, $y);
 
         $directionVisibles = [];
@@ -53,7 +47,20 @@ class Forest
             $directionVisibles[$direction] = true;
         }
 
-        return in_array(true, $directionVisibles);
+        return $directionVisibles;
+    }
+
+    private function isTallest(int $x, int $y): bool
+    {
+        if ($x === 0 || $y === 0) {
+            return true;
+        }
+
+        if ($x === count($this->grid[0]) - 1 || $y === count($this->grid) - 1) {
+            return true;
+        }
+
+        return in_array(true, $this->directionsVisible($x, $y));
     }
 
     public function howManyTreesAreVisible(): int
@@ -130,5 +137,36 @@ class Forest
         }
 
         return $content;
+    }
+
+    public function heatmap(): string
+    {
+        $canvas = new Canvas();
+
+        $content = "";
+        foreach ($this->grid as $y => $line) {
+            foreach ($line as $x => $tree) {
+                $canvas->set($x, $y);
+            }
+        }
+
+        return $this->color($canvas->frame());
+    }
+
+    public function color(string $buffer): string
+    {
+        $colors = new ConsoleColor();
+        $newBuffer = "";
+        $bufferA = mb_str_split($buffer);
+
+        foreach ($bufferA as $i => $bufferI) {
+            $style = "bg_color_".(240 - $i);
+            if ($i > 240) {
+                $style = "bg_color_"."200";
+            }
+            $newBuffer .= $colors->apply($style, $bufferI);
+        }
+
+        return $newBuffer;
     }
 }

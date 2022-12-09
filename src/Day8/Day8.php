@@ -16,10 +16,10 @@ class Day8 extends Command
         $loader = new ForestFileLoader();
         $forest = $loader->load(__DIR__."/../../resources/day-8.txt");
 
-        $output->writeln($forest->debug());
+        $output->writeln($forest->heatmap());
 
-        $output->writeln(sprintf("how many trees are visible ? %d", $forest->howManyTreesAreVisible()));
-        $output->writeln(sprintf("highest scenic score ? %d", $forest->highestScenicScore()));
+        //$output->writeln(sprintf("how many trees are visible ? %d", $forest->howManyTreesAreVisible()));
+        //$output->writeln(sprintf("highest scenic score ? %d", $forest->highestScenicScore()));
 
 
         return 0;

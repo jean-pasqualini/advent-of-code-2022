@@ -4,8 +4,14 @@ namespace App\Day9;
 
 class GameFileLoader
 {
-    public function load(string $filepath): Game
+    public function load(string $filepath, int $knotCount = 2): Game
     {
-        return new Game(new Map(), file($filepath, FILE_IGNORE_NEW_LINES));
+        $knot = null;
+
+        for ($i = 1; $i <= $knotCount; $i++) {
+            $knot = new Knot($knot);
+        }
+
+        return new Game($knot, file($filepath, FILE_IGNORE_NEW_LINES));
     }
 }
