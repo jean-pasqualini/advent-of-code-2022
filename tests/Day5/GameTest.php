@@ -13,7 +13,7 @@ class GameTest extends TestCase
         $game = $loader->loadGame(__DIR__.'/board.txt');
         $player = $loader->loadPlayer(__DIR__.'/player.txt');
 
-        echo $player->playTurn($game).PHP_EOL;
+       $player->playTurn($game);
         // 'move 1 from 2 to 1'
         $this->assertEquals(
             [
@@ -24,7 +24,7 @@ class GameTest extends TestCase
             $game->getBoard()
         );
 
-        echo $player->playTurn($game).PHP_EOL;
+        $player->playTurn($game);
 
         // 'move 3 from 1 to 3'
         $this->assertEquals(
@@ -36,7 +36,7 @@ class GameTest extends TestCase
             $game->getBoard(),
         );
 
-        echo $player->playTurn($game).PHP_EOL;
+        $player->playTurn($game);
         // move 2 from 2 to 1',
         $this->assertEquals(
             [
@@ -47,7 +47,7 @@ class GameTest extends TestCase
             $game->getBoard()
         );
 
-        echo $player->playTurn($game).PHP_EOL;
+        $player->playTurn($game);
         // 'move 1 from 1 to 2',
         $this->assertEquals(
             [
@@ -65,7 +65,7 @@ class GameTest extends TestCase
         $game = $loader->loadGame(__DIR__.'/board.txt');
         $player = $loader->loadPlayer(__DIR__.'/player.txt');
 
-        echo $player->playTurn($game, true).PHP_EOL;
+        $player->playTurn($game, true);
         // 'move 1 from 2 to 1'
         $this->assertEquals(
             [
@@ -77,7 +77,7 @@ class GameTest extends TestCase
             $game->humanReadableBoard(5),
         );
 
-        echo $player->playTurn($game, true).PHP_EOL;
+        $player->playTurn($game, true);
 
         // 'move 3 from 1 to 3'
         $this->assertEquals(
@@ -90,7 +90,7 @@ class GameTest extends TestCase
             $game->humanReadableBoard(5),
         );
 
-        echo $player->playTurn($game, true).PHP_EOL;
+        $player->playTurn($game, true);
         // move 2 from 2 to 1',
         $this->assertEquals(
             [
@@ -102,7 +102,7 @@ class GameTest extends TestCase
             $game->humanReadableBoard(5),
         );
 
-        echo $player->playTurn($game, true).PHP_EOL;
+        $player->playTurn($game, true);
         // 'move 1 from 1 to 2',
         $this->assertEquals(
             [

@@ -16,7 +16,7 @@ class ForestTest extends TestCase
             [3,5,3,9,0],
         ]);
 
-        echo $forest->debug();
+        //echo $forest->debug();
 
         $this->assertEquals(21, $forest->howManyTreesAreVisible());
     }
