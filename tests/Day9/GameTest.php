@@ -36,6 +36,41 @@ class GameTest extends TestCase
         $this->assertEquals(13, $game->getPart1());
     }
 
+    public function testPlay3()
+    {
+        $head = new Knot(null);
+        $body1 = new Knot($head);
+        $body2 = new Knot($body1);
+        $body3 = new Knot($body2);
+        $body4 = new Knot($body3);
+        $body5 = new Knot($body4);
+        $body6 = new Knot($body5);
+        $body7 = new Knot($body6);
+        $body8 = new Knot($body7);
+        $tail = new Knot($body8);
+
+        $game = new Game($head, [
+            "R 4",
+            "U 2",
+        ]);
+
+        echo $game->debugMoinJolie();
+
+        echo "============".PHP_EOL;
+        echo $game->playTurn().PHP_EOL;
+        echo "============".PHP_EOL;
+        echo $game->debugMoinJolie();
+
+        echo PHP_EOL.PHP_EOL.PHP_EOL;
+
+        echo "============".PHP_EOL;
+        echo $game->playTurn().PHP_EOL;
+        echo "============".PHP_EOL;
+        echo $game->debugMoinJolie();
+
+        echo PHP_EOL.PHP_EOL.PHP_EOL;
+    }
+
     public function testPlay2()
     {
         $head = new Knot(null);
@@ -59,6 +94,60 @@ class GameTest extends TestCase
             "R 2",
         ]);
 
+        echo $game->debugMoinJolie();
+
+        echo "============".PHP_EOL;
+        echo $game->playTurn().PHP_EOL;
+        echo "============".PHP_EOL;
+        echo $game->debugMoinJolie();
+
+        echo PHP_EOL.PHP_EOL.PHP_EOL;
+
+        echo "============".PHP_EOL;
+        echo $game->playTurn().PHP_EOL;
+        echo "============".PHP_EOL;
+        echo $game->debugMoinJolie();
+
+        echo PHP_EOL.PHP_EOL.PHP_EOL;
+
+        echo "============".PHP_EOL;
+        echo $game->playTurn().PHP_EOL;
+        echo "============".PHP_EOL;
+        echo $game->debugMoinJolie();
+
+        echo PHP_EOL.PHP_EOL.PHP_EOL;
+
+        echo "============".PHP_EOL;
+        echo $game->playTurn().PHP_EOL;
+        echo "============".PHP_EOL;
+        echo $game->debugMoinJolie();
+
+        echo PHP_EOL.PHP_EOL.PHP_EOL;
+
+        echo "============".PHP_EOL;
+        echo $game->playTurn().PHP_EOL;
+        echo "============".PHP_EOL;
+        echo $game->debugMoinJolie();
+
+        echo PHP_EOL.PHP_EOL.PHP_EOL;
+
+        echo "============".PHP_EOL;
+        echo $game->playTurn().PHP_EOL;
+        echo "============".PHP_EOL;
+        echo $game->debugMoinJolie();
+
+        echo PHP_EOL.PHP_EOL.PHP_EOL;
+
+        echo "============".PHP_EOL;
+        echo $game->playTurn().PHP_EOL;
+        echo "============".PHP_EOL;
+        echo $game->debugMoinJolie();
+
+        echo PHP_EOL.PHP_EOL.PHP_EOL;
+
+        echo "============".PHP_EOL;
+        echo $game->playTurn().PHP_EOL;
+        echo "============".PHP_EOL;
         echo $game->debugMoinJolie();
 
     }

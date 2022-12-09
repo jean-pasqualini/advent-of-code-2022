@@ -63,6 +63,90 @@ class Position
             $this->direction = $head->getDirection();
             switch ($head->getDirection()) {
                 case self::MOVE_UP:
+                    $this->y -= 1;
+                    // Diagonale check
+                    if ($this->getX() < $head->getX()) {
+                        $this->x += 1;
+                    } elseif ($this->getX() > $head->getX()) {
+                        $this->x -= 1;
+                    }
+                    break;
+                case self::MOVE_DOWN:
+                    $this->y += 1;
+                    // Diagonale check
+                    if ($this->getX() < $head->getX()) {
+                        $this->x += 1;
+                    } elseif ($this->getX() > $head->getX()) {
+                        $this->x -= 1;
+                    }
+                    break;
+                case self::MOVE_LEFT:
+                    $this->x -= 1;
+                    // Diagonale check
+                    if ($this->getY() < $head->getY()) {
+                        $this->y += 1;
+                    } elseif ($this->getY() > $head->getY()) {
+                        $this->y -= 1;
+                    }
+                    break;
+                case self::MOVE_RIGHT:
+                    $this->x += 1;
+                    // Diagonale check
+                    if ($this->getY() < $head->getY()) {
+                        $this->y += 1;
+                    } elseif ($this->getY() > $head->getY()) {
+                        $this->y -= 1;
+                    }
+                    break;
+            }
+        }
+
+        return;
+
+        if ($this->getY() + 2 === $head->getY()) {
+            $this->y += 1;
+            // Diagonale check
+            if ($this->getX() < $head->getX()) {
+                $this->x += 1;
+            } elseif ($this->getX() > $head->getX()) {
+                $this->x -= 1;
+            }
+        }
+
+        if ($this->getX() + 2 === $head->getX()) {
+            $this->x += 1;
+            // Diagonale check
+            if ($this->getY() < $head->getY()) {
+                $this->y += 1;
+            } elseif ($this->getY() > $head->getY()) {
+                $this->y -= 1;
+            }
+        }
+
+        if ($this->getY() - 2 === $head->getY()) {
+            $this->y -= 1;
+            // Diagonale check
+            if ($this->getX() < $head->getX()) {
+                $this->x += 1;
+            } elseif ($this->getX() > $head->getX()) {
+                $this->x -= 1;
+            }
+        }
+
+        if ($this->getX() - 2 === $head->getX()) {
+            $this->x -= 1;
+            // Diagonale check
+            if ($this->getY() < $head->getY()) {
+                $this->y += 1;
+            } elseif ($this->getY() > $head->getY()) {
+                $this->y -= 1;
+            }
+        }
+        /**
+        if (!$this->isInRange($head) || !$keepSecurityDistance) {
+            $this->direction = $head->getDirection();
+            switch ($head->getDirection()) {
+                case self::MOVE_UP:
                     $this->x = $head->getX();
                     $this->y = $head->getY() + 1;
                     break;
@@ -80,6 +164,7 @@ class Position
                     break;
             }
         }
+         */
     }
 
     public function __toString(): string

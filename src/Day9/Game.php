@@ -59,7 +59,7 @@ class Game
                 if (null === $number) {
                     $content .= ".";
                 } else {
-                    $content .= $number;
+                    $content .= $number === 1 ? "H" : $number - 1;
                 }
             }
             $content .= PHP_EOL;
