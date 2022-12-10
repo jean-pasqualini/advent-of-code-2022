@@ -12,34 +12,31 @@ class Day9 extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->part1($output, Strategy::CLEO);
-        $this->part1($output, Strategy::MIX);
-
-        $this->part2($output, Strategy::CLEO);
-        $this->part2($output, Strategy::MIX);
+        $this->part1($output);
+        $this->part2($output);
 
         return 0;
     }
 
-    private function part1(OutputInterface $output, Strategy $strategy)
+    private function part1(OutputInterface $output)
     {
         $loader = new GameFileLoader();
         $game = $loader->load(__DIR__.'/../../resources/day-9.txt');
 
         do {
-        } while (null !== $game->playTurn($strategy));
+        } while (null !== $game->playTurn());
 
-        $output->writeln(sprintf("part 1 result with strategy %s: %d", $strategy->name, $game->getPart1()));
+        $output->writeln(sprintf("part 1 result: %d", $game->getPart1()));
     }
 
-    private function part2(OutputInterface $output, Strategy $strategy)
+    private function part2(OutputInterface $output)
     {
         $loader = new GameFileLoader();
         $game = $loader->load(__DIR__.'/../../resources/day-9.txt', 10);
 
         do {
-        } while (null !== $game->playTurn($strategy));
+        } while (null !== $game->playTurn());
 
-        $output->writeln(sprintf("part 2 result with strategy %s: %d", $strategy->name, $game->getPart1()));
+        $output->writeln(sprintf("part 2 result: %d", $game->getPart1()));
     }
 }

@@ -32,7 +32,7 @@ class Game
         return $this->actions;
     }
 
-    public function playTurn(Strategy $strategy): ?string
+    public function playTurn(): ?string
     {
         $turn = array_shift($this->actions);
         if ($turn === null) {
@@ -42,7 +42,7 @@ class Game
         list($direction, $steps) = explode(" ", $turn);
 
         for ($i = 1; $i <= $steps; $i++) {
-            $this->head->move($direction, 1, $strategy);
+            $this->head->move($direction, 1);
             $this->historyHeadPositions[] = (string) $this->head->getPosition();
             $this->historyTailPositions[] = (string) $this->tail->getPosition();
         }

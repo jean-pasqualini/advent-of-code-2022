@@ -6,6 +6,7 @@ namespace App;
 require __DIR__."/../vendor/autoload.php";
 
 use App\Day1\Day1;
+use App\Day10\Day10;
 use App\Day2\Day2;
 use App\Day2Part2\Day2Part2;
 use App\Day3\Day3;
@@ -31,5 +32,6 @@ $application->add(new Day7());
 $application->add(new Day8());
 $application->add(new Day9());
 $application->add(new Day9Test());
+$application->add(new Day10());
 
 $application->run();
