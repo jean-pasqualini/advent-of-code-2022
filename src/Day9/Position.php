@@ -2,6 +2,8 @@
 
 namespace App\Day9;
 
+use PhpParser\PrettyPrinter\Standard;
+
 class Position
 {
     private int $x = 0;
@@ -13,7 +15,20 @@ class Position
     public const MOVE_DOWN = [0,1];
 
     private $direction;
+    private Knot $knot;
 
+    public function __construct(Knot $knot)
+    {
+        $this->knot = $knot;
+    }
+
+    /**
+     * @return Knot
+     */
+    public function getKnot(): Knot
+    {
+        return $this->knot;
+    }
 
     public function getX(): int {
         return $this->x;
@@ -49,7 +64,12 @@ class Position
         return true;
     }
 
-    public function realign(Position $head, $keepSecurityDistance = true)
+    public function apply(Move $move) {
+        $this->x += $move->x;
+        $this->y += $move->y;
+    }
+
+    public function realign(Position $head, Strategy $strategy)
     {
         // -2 -1 +0 +1 +2 : -3
         // -2 -1 +0 +1 +2 : -2
@@ -59,112 +79,89 @@ class Position
         // -2 -1 +0 +1 +2 : +2
         // -2 -1 +0 +1 +2 : +3
 
-        if (!$this->isInRange($head) || !$keepSecurityDistance) {
-            $this->direction = $head->getDirection();
-            switch ($head->getDirection()) {
-                case self::MOVE_UP:
-                    $this->y -= 1;
-                    // Diagonale check
-                    if ($this->getX() < $head->getX()) {
-                        $this->x += 1;
-                    } elseif ($this->getX() > $head->getX()) {
-                        $this->x -= 1;
-                    }
-                    break;
-                case self::MOVE_DOWN:
-                    $this->y += 1;
-                    // Diagonale check
-                    if ($this->getX() < $head->getX()) {
-                        $this->x += 1;
-                    } elseif ($this->getX() > $head->getX()) {
-                        $this->x -= 1;
-                    }
-                    break;
-                case self::MOVE_LEFT:
-                    $this->x -= 1;
-                    // Diagonale check
-                    if ($this->getY() < $head->getY()) {
-                        $this->y += 1;
-                    } elseif ($this->getY() > $head->getY()) {
+        if ($strategy === Strategy::MIX) {
+            if (!$this->isInRange($head)) {
+                $this->direction = $head->getDirection();
+                switch ($head->getDirection()) {
+                    case self::MOVE_UP:
                         $this->y -= 1;
-                    }
-                    break;
-                case self::MOVE_RIGHT:
-                    $this->x += 1;
-                    // Diagonale check
-                    if ($this->getY() < $head->getY()) {
+                        // Diagonale check
+                        if ($this->getX() < $head->getX()) {
+                            $this->x += 1;
+                        } elseif ($this->getX() > $head->getX()) {
+                            $this->x -= 1;
+                        }
+                        break;
+                    case self::MOVE_DOWN:
                         $this->y += 1;
-                    } elseif ($this->getY() > $head->getY()) {
-                        $this->y -= 1;
-                    }
-                    break;
+                        // Diagonale check
+                        if ($this->getX() < $head->getX()) {
+                            $this->x += 1;
+                        } elseif ($this->getX() > $head->getX()) {
+                            $this->x -= 1;
+                        }
+                        break;
+                    case self::MOVE_LEFT:
+                        $this->x -= 1;
+                        // Diagonale check
+                        if ($this->getY() < $head->getY()) {
+                            $this->y += 1;
+                        } elseif ($this->getY() > $head->getY()) {
+                            $this->y -= 1;
+                        }
+                        break;
+                    case self::MOVE_RIGHT:
+                        $this->x += 1;
+                        // Diagonale check
+                        if ($this->getY() < $head->getY()) {
+                            $this->y += 1;
+                        } elseif ($this->getY() > $head->getY()) {
+                            $this->y -= 1;
+                        }
+                        break;
+                }
             }
-        }
+        } elseif ($strategy === Strategy::CLEO) {
+            if ($this->getY() + 2 === $head->getY()) {
+                if ($this->getX() < $head->getX()) {
+                    $this->apply(new Move(x: +1, y: +1));
+                } elseif ($this->getX() > $head->getX()) {
+                    $this->apply(new Move(x: -1, y: +1));
+                } else {
+                    $this->apply(new Move(x: 0, y: +1));
+                }
+            }
 
-        return;
+            if ($this->getX() + 2 === $head->getX()) {
+                if ($this->getY() < $head->getY()) {
+                    $this->apply(new Move(x: +1, y: +1));
+                } elseif ($this->getY() > $head->getY()) {
+                    $this->apply(new Move(x: +1, y: -1));
+                } else {
+                    $this->apply(new Move(x: +1, y: 0));
+                }
+            }
 
-        if ($this->getY() + 2 === $head->getY()) {
-            $this->y += 1;
-            // Diagonale check
-            if ($this->getX() < $head->getX()) {
-                $this->x += 1;
-            } elseif ($this->getX() > $head->getX()) {
-                $this->x -= 1;
+            if ($this->getY() - 2 === $head->getY()) {
+                if ($this->getX() < $head->getX()) {
+                    $this->apply(new Move(x: +1, y: -1));
+                } elseif ($this->getX() > $head->getX()) {
+                    $this->apply(new Move(x: -1, y: -1));
+                } else {
+                    $this->apply(new Move(x: 0, y: -1));
+                }
             }
-        }
 
-        if ($this->getX() + 2 === $head->getX()) {
-            $this->x += 1;
-            // Diagonale check
-            if ($this->getY() < $head->getY()) {
-                $this->y += 1;
-            } elseif ($this->getY() > $head->getY()) {
-                $this->y -= 1;
+            if ($this->getX() - 2 === $head->getX()) {
+                if ($this->getY() < $head->getY()) {
+                    $this->apply(new Move(x: -1, y: +1));
+                } elseif ($this->getY() > $head->getY()) {
+                    $this->apply(new Move(x: -1, y: -1));
+                } else {
+                    $this->apply(new Move(x: -1, y: 0));
+                }
             }
         }
-
-        if ($this->getY() - 2 === $head->getY()) {
-            $this->y -= 1;
-            // Diagonale check
-            if ($this->getX() < $head->getX()) {
-                $this->x += 1;
-            } elseif ($this->getX() > $head->getX()) {
-                $this->x -= 1;
-            }
-        }
-
-        if ($this->getX() - 2 === $head->getX()) {
-            $this->x -= 1;
-            // Diagonale check
-            if ($this->getY() < $head->getY()) {
-                $this->y += 1;
-            } elseif ($this->getY() > $head->getY()) {
-                $this->y -= 1;
-            }
-        }
-        /**
-        if (!$this->isInRange($head) || !$keepSecurityDistance) {
-            $this->direction = $head->getDirection();
-            switch ($head->getDirection()) {
-                case self::MOVE_UP:
-                    $this->x = $head->getX();
-                    $this->y = $head->getY() + 1;
-                    break;
-                case self::MOVE_DOWN:
-                    $this->x = $head->getX();
-                    $this->y = $head->getY() - 1;
-                    break;
-                case self::MOVE_LEFT:
-                    $this->x = $head->getX() + 1;
-                    $this->y = $head->getY();
-                    break;
-                case self::MOVE_RIGHT:
-                    $this->x = $head->getX() - 1;
-                    $this->y = $head->getY();
-                    break;
-            }
-        }
-         */
     }
 
     public function __toString(): string

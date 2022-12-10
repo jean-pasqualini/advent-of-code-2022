@@ -25,7 +25,7 @@ class Knot
         self::$nameGenerator++;
         $this->name = self::$nameGenerator;
 
-        $this->position = new Position();
+        $this->position = new Position($this);
         $this->follow = $follow;
         if (null !== $this->follow) {
             $this->follow->setFollowBy($this);
@@ -57,23 +57,28 @@ class Knot
         return $this->isHead() ? $this : $this->follow->getHead();
     }
 
-    public function move($direction, $steps) {
+    public function move($direction, $steps, Strategy $strategy) {
         $this->position->move(self::DIRECTIONS[$direction], $steps);
-        $this->realign();
+        $this->realign($strategy);
     }
 
-    public function realign() {
+    public function realign(Strategy $strategy) {
         if (null !== $this->follow) {
-            $this->position->realign($this->follow->getPosition());
+            $this->position->realign($this->follow->getPosition(), $strategy);
         }
         if (null !== $this->followBy) {
-            $this->followBy->realign();
+            $this->followBy->realign($strategy);
         }
     }
 
     public function getPosition(): Position
     {
         return $this->position;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     public function getNameByPosition(int $x, int $y): ?int {

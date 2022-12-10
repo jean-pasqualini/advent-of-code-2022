@@ -32,7 +32,7 @@ class Day9Test extends Command
                 sleep(1);
                 $sectionGame->clear(100);
                 $sectionResult->clear();
-            } while (null !== $game->playTurn());
+            } while (null !== $game->playTurn(Strategy::CLEO));
         }
 
         return 0;
